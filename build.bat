@@ -1,0 +1,2 @@
+javac -cp C:\workspaces\libs\felix-framework-4.6.0\bin\felix.jar -d build src\tutorial\example1\Activator.java
+jar cfm build\example1.jar src\tutorial\example1\manifest.mf -C build tutorial\example1\Activator.class
