@@ -14,3 +14,8 @@ jar cfm build\example4.jar src\tutorial\example4\manifest.mf -C build tutorial\e
 
 javac -cp %FELIX_HOME%\bin\felix.jar;build\example2.jar -d build src\tutorial\example5\Activator.java
 jar cfm build\example5.jar src\tutorial\example5\manifest.mf -C build tutorial\example5\
+
+javac -cp %FELIX_HOME%\bin\felix.jar;build\example2.jar -d build src\tutorial\example6\Activator.java src\tutorial\example6\service\SpellChecker.java
+jar cfm build\example6.jar src\tutorial\example6\manifest.mf -C build tutorial\example6\
+
+
