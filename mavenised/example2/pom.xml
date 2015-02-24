@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>felix.tutorial</groupId>
-  <artifactId>example1</artifactId>
-  <packaging>bundle</packaging>
+  <artifactId>example2</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <packaging>bundle</packaging>
 
-  <name>Service Listener Example</name>
+  <name>English dictionary</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -45,13 +45,14 @@
                 <configuration>
                     <instructions>
                         <Export-Package>
+							tutorial.example2.service
                         </Export-Package>
                         <Private-Package>
-                            tutorial.example1
+                            tutorial.example2
                         </Private-Package>
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
                         <Bundle-Activator>
-                            tutorial.example1.Activator
+                            tutorial.example2.Activator
                         </Bundle-Activator>
                     </instructions>
                 </configuration>
