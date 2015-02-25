@@ -11,5 +11,9 @@
     <module>example2</module>
     <module>example3</module>
     <module>example2b</module>
+    <module>example4</module>
+    <module>example5</module>
+    <module>example6.service</module>
+    <module>example6</module>
   </modules>
 </project>

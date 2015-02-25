@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>felix.tutorial</groupId>
-  <artifactId>example2.service</artifactId>
+  <artifactId>example6.service</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
 
-  <name>English dictionary API</name>
+  <name>Spell checker service API</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -19,6 +19,16 @@
 		<groupId>org.apache.felix</groupId>
 		<artifactId>org.osgi.core</artifactId>
 		<version>1.4.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.felix</groupId>
+		<artifactId>org.osgi.compendium</artifactId>
+		<version>1.4.0</version>
+	</dependency>
+	<dependency>
+		<groupId>felix.tutorial</groupId>
+		<artifactId>example2.service</artifactId>
+		<version>1.0-SNAPSHOT</version>
 	</dependency>
 	<dependency>
       <groupId>junit</groupId>
@@ -44,8 +54,8 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>
-							tutorial.example2.service
+					 <Export-Package>
+							tutorial.example6.service
                         </Export-Package>
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
                     </instructions>
