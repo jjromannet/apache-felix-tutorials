@@ -4,22 +4,12 @@
 
 package tutorial.example6;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.StringTokenizer;
-
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
-import org.osgi.framework.ServiceReference;
-import org.osgi.framework.ServiceListener;
-import org.osgi.framework.ServiceEvent;
-
+import org.osgi.framework.*;
 import tutorial.example2.service.DictionaryService;
 import tutorial.example6.service.SpellChecker;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class implements a bundle that implements a spell
@@ -69,31 +59,27 @@ public class Activator implements BundleActivator, ServiceListener
                 DictionaryService.class.getName(), "(Language=*)");
 
             // Add any dictionaries to the service reference list.
-            if (refs != null)
-            {
-                for (int i = 0; i < refs.length; i++)
-                {
+            if (refs != null) {
+                for (ServiceReference ref : refs) {
                     // Get the service object.
-                    Object service = m_context.getService(refs[i]);
+                    Object service = m_context.getService(ref);
 
                     // Make that the service is not being duplicated.
                     if ((service != null) &&
-                        (m_refToObjMap.get(refs[i]) == null))
-                    {
+                            (m_refToObjMap.get(ref) == null)) {
                         // Add to the reference list.
-                        m_refList.add(refs[i]);
+                        m_refList.add(ref);
                         // Map reference to service object for easy look up.
-                        m_refToObjMap.put(refs[i], service);
+                        m_refToObjMap.put(ref, service);
                     }
                 }
 
                 // Register spell checker service if there are any
                 // dictionary services.
-                if (m_refList.size() > 0)
-                {
+                if (m_refList.size() > 0) {
                     m_reg = m_context.registerService(
-                        SpellChecker.class.getName(),
-                        new SpellCheckerImpl(), null);
+                            SpellChecker.class.getName(),
+                            new SpellCheckerImpl(this), null);
                 }
             }
         }
@@ -144,7 +130,7 @@ public class Activator implements BundleActivator, ServiceListener
                     {
                         m_reg = m_context.registerService(
                             SpellChecker.class.getName(),
-                            new SpellCheckerImpl(), null);
+                            new SpellCheckerImpl(this), null);
                     }
                 }
                 else if (service != null)
@@ -177,71 +163,11 @@ public class Activator implements BundleActivator, ServiceListener
         }
     }
 
-    /**
-     * A private inner class that implements a spell checker service;
-     * see SpellChecker for details of the service.
-    **/
-    private class SpellCheckerImpl implements SpellChecker
-    {
-        /**
-         * Implements SpellChecker.check(). Checks the
-         * given passage for misspelled words.
-         * @param passage the passage to spell check.
-         * @return An array of misspelled words or null if no
-         *         words are misspelled.
-        **/
-        public String[] check(String passage)
-        {
-            // No misspelled words for an empty string.
-            if ((passage == null) || (passage.length() == 0))
-            {
-                return null;
-            }
+    public synchronized HashMap getM_refToObjMap() {
+        return m_refToObjMap;
+    }
 
-            ArrayList errorList = new ArrayList();
-
-            // Tokenize the passage using spaces and punctionation.
-            StringTokenizer st = new StringTokenizer(passage, " ,.!?;:");
-
-            // Lock the service list.
-            synchronized (m_refList)
-            {
-                // Loop through each word in the passage.
-                while (st.hasMoreTokens())
-                {
-                    String word = st.nextToken();
-
-                    boolean correct = false;
-
-                    // Check each available dictionary for the current word.
-                    for (int i = 0; (!correct) && (i < m_refList.size()); i++)
-                    {
-                        DictionaryService dictionary =
-                            (DictionaryService) m_refToObjMap.get(m_refList.get(i));
-
-                        if (dictionary.checkWord(word))
-                        {
-                            correct = true;
-                        }
-                    }
-
-                    // If the word is not correct, then add it
-                    // to the incorrect word list.
-                    if (!correct)
-                    {
-                        errorList.add(word);
-                    }
-                }
-            }
-
-            // Return null if no words are incorrect.
-            if (errorList.size() == 0)
-            {
-                return null;
-            }
-
-            // Return the array of incorrect words.
-            return (String[]) errorList.toArray(new String[errorList.size()]);
-        }
+    public synchronized ArrayList getM_refList() {
+        return m_refList;
     }
 }

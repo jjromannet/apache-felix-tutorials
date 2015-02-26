@@ -3,3 +3,5 @@ felix-cache
 lib
 tmp
 mavenised/*/target
+*.iml
+.idea
