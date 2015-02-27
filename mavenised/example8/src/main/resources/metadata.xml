@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bundle>
+    <!--
+      -- This meta-data file instructs the Service Binder to
+      -- create one instance of "SpellCheckerImpl". It also
+      -- tells the generic activator that this instance implements the
+      -- "SpellChecker" service interface and that it has an
+      -- aggregate dependency on "DictionaryService" services. Since
+      -- the service dependency on dictionary services has a lower
+      -- cardinality of one, the generic activator will create the instance
+      -- and offer its spell checker service only when there is at least
+      -- one dictionary service available. The service dependency is
+      -- "dynamic", which means that dictionary service availability
+      -- will be monitored dynamically at runtime and it also tells the
+      -- generic activator which methods to call when adding and removing
+      -- dictionary services.
+      -->
+    <instance class="tutorial.example8.SpellCheckerImpl">
+        <service interface="tutorial.example6.service.SpellChecker"/>
+        <requires
+                service="tutorial.example2.service.DictionaryService"
+                filter="(Language=*)"
+                cardinality="1..n"
+                policy="dynamic"
+                bind-method="addDictionary"
+                unbind-method="removeDictionary"
+                />
+    </instance>
+</bundle>
